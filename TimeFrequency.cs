@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Numerics;
 using System.Threading;
+using System.IO;
 
 namespace DigitalAudioConsole
    {
@@ -23,7 +24,7 @@ namespace DigitalAudioConsole
       /// </summary>
       /// <param name="originalWaveDataArray">The actual sound data as an array of floats between -1.0 and 1.0</param>
       /// <param name="windowSampleSize">The number of sound samples to aggregate into one result</param>
-      public TimeFrequency( float[] originalWaveDataArray, int windowSampleSize )
+      public TimeFrequency( float[] originalWaveDataArray, int windowSampleSize, int threadnum )
          {
          Complex imaginaryOne = Complex.ImaginaryOne;
          m_WindowSampleSize = windowSampleSize;
@@ -63,9 +64,22 @@ namespace DigitalAudioConsole
 
          // Now start the Voodoo math :)
          ShortTimeFourierTransform( complexDataArray );
+         WriteToFile(m_TimeFrequencyData, threadnum);
          }
 
-
+      private void WriteToFile(float[][] test, int num)
+      {
+          using (StreamWriter writer = new StreamWriter("WaveFiles\\Thread" + num + ".txt", true))
+          {
+              foreach (float[] f in test)
+              {
+                  foreach (float a in f)
+                  {
+                      writer.WriteLine(a.ToString());
+                  }
+              }
+          }
+      }
       /// <summary>
       /// This will determine the frequency and phase of the WAV audio data (Complex[] sourceComplexDataArray)
       /// </summary>
@@ -110,26 +124,6 @@ namespace DigitalAudioConsole
                          }
                      }
                  
-          
-            
-
-          /*unmodified
-         for (int windowIndex = 0; windowIndex < columns - 1; windowIndex++)
-            {
-            for (int sampleIndex = 0; sampleIndex < m_WindowSampleSize; sampleIndex++)
-               {
-               untransformedComplexArray[sampleIndex] = sourceComplexDataArray[windowIndex * halfWindowSampleSize + sampleIndex];
-               }
-
-            // Process this "window" of data
-            transformedComplexArray = FastFourierTransformation( untransformedComplexArray );
-
-            // Now we have a processed "window" of data. Copy the Complex data array into the final 2-dimensional array of floats
-            for (int sampleIndex = 0; sampleIndex < halfWindowSampleSize; sampleIndex++)
-               {
-               m_TimeFrequencyData[sampleIndex][windowIndex] = (float)Complex.Abs( transformedComplexArray[sampleIndex] );
-               }
-            }*/
          }
 
 

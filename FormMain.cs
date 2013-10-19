@@ -36,10 +36,7 @@ namespace DigitalAudioConsole
 
 
 
-        private void WriteToFile(string test)
-        {
-            StreamWriter sw = new StreamWriter(txtWave.Text);
-        }
+
 
         /// <summary>
         /// Do Stuff...
@@ -99,8 +96,7 @@ namespace DigitalAudioConsole
         {
             Thread thread = new Thread(() =>
             {
-                timefreq[number] = FrequencyDomain(Wave);
-                Array.Copy(Wave, 0, m_WaveIn.m_Wave, count, countForThread);
+                timefreq[number] = FrequencyDomain(Wave, number);
             });
             threadList.Add(thread);
         }
@@ -250,12 +246,12 @@ namespace DigitalAudioConsole
         /// This is used to create a "Spectrum Analysis" of the WAV, could be used to graph wave frequency over time.
         /// The array produced (m_PixelArray) is not currently being used by the application.
         /// </summary>
-        public TimeFrequency FrequencyDomain(float[] wave)
+        public TimeFrequency FrequencyDomain(float[] wave, int threadnum)
         {
             // Create a new TimeFrequency object, passing the actual sound data (m_WaveIn.m_Wave) as an array of floats and setting Sample Window to 2048
             // The Sample Window tells the Fourier Transform function how many samples to aggregate into one result. The window of samples is analyzed to determine
             // the predominant frequency in that particular range of samples.
-            return new TimeFrequency(wave, 2048);
+            return new TimeFrequency(wave, 2048, threadnum);
 
         }
 
@@ -285,6 +281,12 @@ namespace DigitalAudioConsole
             {
                 txtWave.Text = openFileDialog.FileName;
             }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+            
         }
 
 
