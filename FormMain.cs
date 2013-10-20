@@ -276,17 +276,11 @@ namespace DigitalAudioConsole
 
         private void button1_Click(object sender, EventArgs e)
         {
-                   
+
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 txtWave.Text = openFileDialog.FileName;
             }
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-
-            
         }
 
 
