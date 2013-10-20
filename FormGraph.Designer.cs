@@ -39,6 +39,7 @@
             this.panelGraph.Name = "panelGraph";
             this.panelGraph.Size = new System.Drawing.Size(850, 518);
             this.panelGraph.TabIndex = 0;
+            this.panelGraph.Paint += new System.Windows.Forms.PaintEventHandler(this.panelGraph_Paint);
             // 
             // FormGraph
             // 

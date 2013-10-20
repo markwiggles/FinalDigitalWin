@@ -54,5 +54,10 @@ namespace DigitalAudioConsole
       {
 
       }
+
+      private void panelGraph_Paint(object sender, PaintEventArgs e)
+      {
+
+      }
       }
    }

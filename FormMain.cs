@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
 using System.Threading;
+using System.Diagnostics;
 
 namespace DigitalAudioConsole
 {
@@ -27,7 +28,9 @@ namespace DigitalAudioConsole
         int numThreads = 4;
         List<float[]> wavelist = new List<float[]>();
         private const double m_BaseFrequency = 16.351625;  // 16.351625 "C" in Hertzl
-        TimeFrequency[] timefreq = new TimeFrequency[4];
+        TimeFrequency[] timefreq;
+        TimeFrequency timeReal;
+        Stopwatch stopwatch = new Stopwatch();
 
         public FormMain()
         {
@@ -69,7 +72,10 @@ namespace DigitalAudioConsole
             {
                 // Create a "Spectrum Analysis" type map of the WAV file and set m_TimeFrequency with the resulting data.
                 //FrequencyDomain(m_WaveIn.m_Wave);
+                stopwatch.Start();
                 ThreadStart(m_WaveIn.m_Wave);
+                stopwatch.Stop();
+                MessageBox.Show("The time it took to do the process was: " + stopwatch.Elapsed);
                 int count = 0;
                 foreach (TimeFrequency time in timefreq)
                 {
@@ -91,7 +97,9 @@ namespace DigitalAudioConsole
                 formNoteData.DisplayNoteData(m_MusicNoteList);
             }
         }
-
+        // <Summary>
+        // Create the Thread
+        // </Summary>
         public void ThreadingProc(float[] Wave, int count, int number)
         {
             Thread thread = new Thread(() =>
@@ -101,10 +109,13 @@ namespace DigitalAudioConsole
             threadList.Add(thread);
         }
 
-
+        //<Summary>
+        // Divides the wave file into the required threads and creates and runs those threads.
+        // Parameters: WaveFile, Complete wave file to be transformed.
+        //</Summary>
         public void ThreadStart(float[] waveFile)
         {
-
+            // Variable Declarion
             threadList = new List<Thread>();
             countForThread = waveFile.Count() / numThreads;
             wavelist = new List<float[]>();
@@ -119,7 +130,7 @@ namespace DigitalAudioConsole
                 start += countForThread;
             }
 
-            //start threads
+            //Create The Threads
             start = 0;
             int count = 0;
             foreach (float[] temp in wavelist)
@@ -129,15 +140,20 @@ namespace DigitalAudioConsole
                 start += countForThread;
                 count++;
             }
+
+            //Start The Threads
             foreach (Thread thread in threadList)
             {
                 thread.Start();
             }
 
+            //Join the Threads once they are finished.
             foreach (Thread thread in threadList)
             {
                 thread.Join();
             }
+
+            
 
         }
 
