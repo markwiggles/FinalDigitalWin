@@ -69,7 +69,7 @@ namespace DigitalAudioConsole
 
       private void WriteToFile(float[][] test, int num)
       {
-          using (StreamWriter writer = new StreamWriter("WaveFiles\\Thread" + num + ".txt", true))
+          using (StreamWriter writer = new StreamWriter("Thread" + num + ".txt", true))
           {
               foreach (float[] f in test)
               {
