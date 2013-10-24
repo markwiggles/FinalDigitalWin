@@ -29,7 +29,6 @@ namespace DigitalAudioConsole
         List<float[]> wavelist = new List<float[]>();
         private const double m_BaseFrequency = 16.351625;  // 16.351625 "C" in Hertzl
         TimeFrequency[] timefreq;
-        TimeFrequency timeReal;
         Stopwatch stopwatch = new Stopwatch();
 
         public FormMain()
@@ -80,7 +79,7 @@ namespace DigitalAudioConsole
                 foreach (TimeFrequency time in timefreq)
                 {
                     FormGraph formGraph = new FormGraph();
-                    formGraph.Show();
+                    //formGraph.Show();
                     formGraph.DisplayGraph(time, audioFileName, count);
                     count++;
                 }
