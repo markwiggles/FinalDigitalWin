@@ -100,7 +100,7 @@ namespace DigitalAudioConsole
         // <Summary>
         // Create the Thread
         // </Summary>
-        public void ThreadingProc(float[] Wave, int count, int number)
+        public void ThreadingProc(float[] Wave, int number)
         {
             Thread thread = new Thread(() =>
             {
@@ -136,8 +136,7 @@ namespace DigitalAudioConsole
             foreach (float[] temp in wavelist)
             {
 
-                ThreadingProc(temp, start, count);
-                start += countForThread;
+                ThreadingProc(temp, count);
                 count++;
             }
 
