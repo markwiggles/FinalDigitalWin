@@ -103,7 +103,7 @@ namespace DigitalAudioConsole
         {
             Thread thread = new Thread(() =>
             {
-                timefreq[number] = FrequencyDomain(Wave, number);
+                timefreq[number] = new TimeFrequency(Wave, 2048, number);
             });
             threadList.Add(thread);
         }
@@ -253,20 +253,6 @@ namespace DigitalAudioConsole
             // For a sample rate of 44100 and a tempo of 70, a quarter note (duration = 4) would be converted to 37,800 which is the number of samples that equal a 1/4 note.
             // An 1/8 note would be converted to 18,900, etc.
             m_MusicNoteList.Add(new MusicNote(frequency, (double)duration * 60 * m_WaveIn.m_SampleRate / (4 * m_BeatsPerMinute), step));
-        }
-
-
-        /// <summary>
-        /// This is used to create a "Spectrum Analysis" of the WAV, could be used to graph wave frequency over time.
-        /// The array produced (m_PixelArray) is not currently being used by the application.
-        /// </summary>
-        public TimeFrequency FrequencyDomain(float[] wave, int threadnum)
-        {
-            // Create a new TimeFrequency object, passing the actual sound data (m_WaveIn.m_Wave) as an array of floats and setting Sample Window to 2048
-            // The Sample Window tells the Fourier Transform function how many samples to aggregate into one result. The window of samples is analyzed to determine
-            // the predominant frequency in that particular range of samples.
-            return new TimeFrequency(wave, 2048, threadnum);
-
         }
 
 
